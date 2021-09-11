@@ -720,11 +720,14 @@ def test_simplified_interface_all_failed(mocker, hyperopt_conf) -> None:
 
     hyperopt_conf.update({'spaces': 'all', })
 
+    mocker.patch('freqtrade.optimize.hyperopt_auto.HyperOptAuto._generate_indicator_space',
+                 return_value=[])
+
     hyperopt = Hyperopt(hyperopt_conf)
     hyperopt.backtesting.strategy.advise_all_indicators = MagicMock()
     hyperopt.custom_hyperopt.generate_roi_table = MagicMock(return_value={})
 
-    with pytest.raises(OperationalException, match=r"The 'buy' space is included into *"):
+    with pytest.raises(OperationalException, match=r"The 'protection' space is included into *"):
         hyperopt.start()
 
 
@@ -826,11 +829,12 @@ def test_simplified_interface_sell(mocker, hyperopt_conf, capsys) -> None:
     assert hasattr(hyperopt, "position_stacking")
 
 
-@pytest.mark.parametrize("method,space", [
-    ('indicator_space', 'buy'),
-    ('sell_indicator_space', 'sell'),
+@pytest.mark.parametrize("space", [
+    ('buy'),
+    ('sell'),
+    ('protection'),
 ])
-def test_simplified_interface_failed(mocker, hyperopt_conf, method, space) -> None:
+def test_simplified_interface_failed(mocker, hyperopt_conf, space) -> None:
     mocker.patch('freqtrade.optimize.hyperopt.dump', MagicMock())
     mocker.patch('freqtrade.optimize.hyperopt.file_dump_json')
     mocker.patch('freqtrade.optimize.backtesting.Backtesting.load_bt_data',
@@ -839,6 +843,8 @@ def test_simplified_interface_failed(mocker, hyperopt_conf, method, space) -> No
         'freqtrade.optimize.hyperopt.get_timerange',
         MagicMock(return_value=(datetime(2017, 12, 10), datetime(2017, 12, 13)))
     )
+    mocker.patch('freqtrade.optimize.hyperopt_auto.HyperOptAuto._generate_indicator_space',
+                 return_value=[])
 
     patch_exchange(mocker)
 
@@ -847,8 +853,6 @@ def test_simplified_interface_failed(mocker, hyperopt_conf, method, space) -> No
     hyperopt = Hyperopt(hyperopt_conf)
     hyperopt.backtesting.strategy.advise_all_indicators = MagicMock()
     hyperopt.custom_hyperopt.generate_roi_table = MagicMock(return_value={})
-
-    delattr(hyperopt.custom_hyperopt.__class__, method)
 
     with pytest.raises(OperationalException, match=f"The '{space}' space is included into *"):
         hyperopt.start()
