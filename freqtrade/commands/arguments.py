@@ -55,8 +55,6 @@ ARGS_BUILD_CONFIG = ["config"]
 
 ARGS_BUILD_STRATEGY = ["user_data_dir", "strategy", "template"]
 
-ARGS_BUILD_HYPEROPT = ["user_data_dir", "hyperopt", "template"]
-
 ARGS_CONVERT_DATA = ["pairs", "format_from", "format_to", "erase"]
 ARGS_CONVERT_DATA_OHLCV = ARGS_CONVERT_DATA + ["timeframes"]
 
@@ -176,10 +174,9 @@ class Arguments:
                                         start_hyperopt_list, start_hyperopt_show, start_install_ui,
                                         start_list_data, start_list_exchanges, start_list_hyperopts,
                                         start_list_markets, start_list_strategies,
-                                        start_list_timeframes, start_new_config, start_new_hyperopt,
-                                        start_new_strategy, start_plot_dataframe, start_plot_profit,
-                                        start_show_trades, start_test_pairlist, start_trading,
-                                        start_webserver)
+                                        start_list_timeframes, start_new_config, start_new_strategy,
+                                        start_plot_dataframe, start_plot_profit, start_show_trades,
+                                        start_test_pairlist, start_trading, start_webserver)
 
         subparsers = self.parser.add_subparsers(dest='command',
                                                 # Use custom message when no subhandler is added
@@ -205,12 +202,6 @@ class Arguments:
                                                  help="Create new config")
         build_config_cmd.set_defaults(func=start_new_config)
         self._build_args(optionlist=ARGS_BUILD_CONFIG, parser=build_config_cmd)
-
-        # add new-hyperopt subcommand
-        build_hyperopt_cmd = subparsers.add_parser('new-hyperopt',
-                                                   help="Create new hyperopt")
-        build_hyperopt_cmd.set_defaults(func=start_new_hyperopt)
-        self._build_args(optionlist=ARGS_BUILD_HYPEROPT, parser=build_hyperopt_cmd)
 
         # add new-strategy subcommand
         build_strategy_cmd = subparsers.add_parser('new-strategy',
