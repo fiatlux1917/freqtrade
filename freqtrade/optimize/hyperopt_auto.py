@@ -4,9 +4,7 @@ This module implements a convenience auto-hyperopt class, which can be used toge
  that implement IHyperStrategy interface.
 """
 from contextlib import suppress
-from typing import Any, Callable, Dict, List
-
-from pandas import DataFrame
+from typing import Callable, Dict, List
 
 
 with suppress(ImportError):
