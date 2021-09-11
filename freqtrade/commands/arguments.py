@@ -93,7 +93,7 @@ NO_CONF_REQURIED = ["convert-data", "convert-trade-data", "download-data", "list
                     "list-hyperopts", "hyperopt-list", "hyperopt-show",
                     "plot-dataframe", "plot-profit", "show-trades"]
 
-NO_CONF_ALLOWED = ["create-userdir", "list-exchanges", "new-hyperopt", "new-strategy"]
+NO_CONF_ALLOWED = ["create-userdir", "list-exchanges", "new-strategy"]
 
 
 class Arguments:
