@@ -82,7 +82,21 @@ class MyAwesomeStrategy(IStrategy):
         # Define a custom stoploss space.
         def stoploss_space():
             return [SKDecimal(-0.05, -0.01, decimals=3, name='stoploss')]
+
+        # Define custom ROI space
+        def roi_space() -> List[Dimension]:
+            return [
+                Integer(10, 120, name='roi_t1'),
+                Integer(10, 60, name='roi_t2'),
+                Integer(10, 40, name='roi_t3'),
+                SKDecimal(0.01, 0.04, decimals=3, name='roi_p1'),
+                SKDecimal(0.01, 0.07, decimals=3, name='roi_p2'),
+                SKDecimal(0.01, 0.20, decimals=3, name='roi_p3'),
+            ]
 ```
+
+!!! Note
+    All overrides are optional and can be mixed/matched as necessary.
 
 ## Space options
 
